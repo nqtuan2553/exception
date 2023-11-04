@@ -9,59 +9,51 @@ ORDER BY Tuoi;
 
 -- Cau 2
 SELECT DISTINCT Ten FROM Sinh_Vien
-JOIN Ghi_Danh ON sv.MSSV = gd.MSSV;
+JOIN Ghi_Danh ON Sinh_Vien.MSSV = Ghi_Danh.MSSV;
 
 -- Cau 3
-SELECT Cap_Bac, AVG(Tuoi) AS TuoiTrungBinh
-FROM Sinh_Vien
+SELECT Cap_Bac, AVG(Tuoi) AS TuoiTrungBinh FROM Sinh_Vien
 GROUP BY Cap_Bac;
 
 -- Cau 4
-SELECT Giang_Vien, COUNT(*) AS SoLop
-FROM Khoa k
-JOIN Lop_Hoc lh ON k.ID = lh.ID
-WHERE lh.Phong_Hoc = 'BA1080'
+SELECT Giang_Vien, COUNT(*) AS SoLop FROM Khoa
+JOIN Lop_Hoc ON Khoa.ID = Lop_Hoc.ID
+WHERE Lop_Hoc.Phong_Hoc = 'BA1080'
 GROUP BY Giang_Vien;
 
 -- Cau 5
-SELECT sv.MSSV
-FROM Sinh_Vien sv
-JOIN Ghi_Danh gd ON sv.MSSV = gd.MSSV
-JOIN Lop_Hoc lh ON gd.Ten_Lop = lh.Ten_Lop
-JOIN Khoa k ON lh.ID = k.ID
-WHERE sv.Cap_Bac = 'JR' AND k.Giang_Vien = 'Trần Quốc Long';
+SELECT MSSV FROM Sinh_Vien
+JOIN Ghi_Danh ON Sinh_Vien.MSSV = Ghi_Danh.MSSV
+JOIN Lop_Hoc ON Ghi_Danh.Ten_Lop = Lop_Hoc.Ten_Lop
+JOIN Khoa ON Lop_Hoc.ID = Khoa.ID
+WHERE Sinh_Vien.Cap_Bac = 'JR' AND Khoa.Giang_Vien = 'Trần Quốc Long';
 
 -- Cau 6
-SELECT sv1.Ten
-FROM Sinh_Vien sv1
-JOIN Ghi_Danh gd1 ON sv1.MSSV = gd1.MSSV
+SELECT Ten FROM Sinh_Vien
+JOIN Ghi_Danh gd1 ON Sinh_Vien.MSSV = gd1.MSSV
 JOIN Lop_Hoc lh1 ON gd1.Ten_Lop = lh1.Ten_Lop
-JOIN Ghi_Danh gd2 ON sv1.MSSV = gd2.MSSV
+JOIN Ghi_Danh gd2 ON Sinh_Vien.MSSV = gd2.MSSV
 JOIN Lop_Hoc lh2 ON gd2.Ten_Lop = lh2.Ten_Lop
-WHERE lh1.Dia_Diem = lh2.Dia_Diem AND lh1.Ten_Lop <> lh2.Ten_Lop;
+WHERE lh1.Dia_Diem = lh2.Dia_Diem AND lh1.Ten_Lop != lh2.Ten_Lop;
 
 -- Cau 7
-SELECT DISTINCT lh.Ten_Lop
-FROM Lop_Hoc lh
-LEFT JOIN Ghi_Danh gd ON lh.Ten_Lop = gd.Ten_Lop
-WHERE lh.Phong_Hoc = 'BA1080' OR (SELECT COUNT(*) FROM Ghi_Danh WHERE Ten_Lop = lh.Ten_Lop) >= 2;
+SELECT DISTINCT Ten_Lop FROM Lop_Hoc
+LEFT JOIN Ghi_Danh ON Lop_Hoc.Ten_Lop = Ghi_Danh.Ten_Lop
+WHERE Lop_Hoc.Phong_Hoc = 'BA1080' OR (SELECT COUNT(*) FROM Ghi_Danh WHERE Ten_Lop = Lop_Hoc.Ten_Lop) >= 2;
 
 -- cau 8
-SELECT k.Giang_Vien
-FROM Khoa k
-LEFT JOIN Lop_Hoc lh ON k.ID = lh.ID
-LEFT JOIN Ghi_Danh gd ON lh.Ten_Lop = gd.Ten_Lop
-GROUP BY k.Giang_Vien
-HAVING COUNT(gd.MSSV) < 5;
+SELECT Giang_Vien FROM Khoa 
+LEFT JOIN Lop_Hoc ON Khoa.ID = Lop_Hoc.ID
+LEFT JOIN Ghi_Danh ON Lop_Hoc.Ten_Lop = Ghi_Danh.Ten_Lop
+GROUP BY Khoa.Giang_Vien
+HAVING COUNT(Ghi_Danh.MSSV) < 5;
 
 -- cau 9
-SELECT MSSV, COUNT(Ten_Lop) AS SoLopDangKy
-FROM Ghi_Danh
+SELECT MSSV, COUNT(Ten_Lop) AS SoLopDangKy FROM Ghi_Danh
 GROUP BY MSSV
 HAVING COUNT(Ten_Lop) >= 2;
 
 -- cau10
-SELECT sv.Ten, gd.Ten_Lop
-FROM Sinh_Vien sv
-LEFT JOIN Ghi_Danh gd ON sv.MSSV = gd.MSSV;
+SELECT Sinh_Vien.Ten, Ghi_Danh.Ten_Lop FROM Sinh_Vien
+LEFT JOIN Ghi_Danh ON Sinh_Vien.MSSV = Ghi_Danh.MSSV;
 </h1>
