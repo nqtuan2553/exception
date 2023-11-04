@@ -1,3 +1,66 @@
 <h1>
     heheboi
+    use SINH_VIEN;
+-- Cau1
+select  Ten from Sinh_Vien where Cap_Bac = 'GR'
+order by Tuoi;
+
+-- Cau2
+SELECT DISTINCT sv.Ten
+FROM Sinh_Vien sv
+JOIN Ghi_Danh gd ON sv.MSSV = gd.MSSV;
+
+-- Cau3
+SELECT Cap_Bac, AVG(Tuoi) AS TuoiTrungBinh
+FROM Sinh_Vien
+GROUP BY Cap_Bac;
+
+-- Cau 4
+SELECT Giang_Vien, COUNT(*) AS SoLop
+FROM Khoa k
+JOIN Lop_Hoc lh ON k.ID = lh.ID
+WHERE lh.Phong_Hoc = 'BA1080'
+GROUP BY Giang_Vien;
+
+-- Cau 5
+SELECT sv.MSSV
+FROM Sinh_Vien sv
+JOIN Ghi_Danh gd ON sv.MSSV = gd.MSSV
+JOIN Lop_Hoc lh ON gd.Ten_Lop = lh.Ten_Lop
+JOIN Khoa k ON lh.ID = k.ID
+WHERE sv.Cap_Bac = 'JR' AND k.Giang_Vien = 'Trần Quốc Long';
+
+-- Cau 6
+SELECT sv1.Ten
+FROM Sinh_Vien sv1
+JOIN Ghi_Danh gd1 ON sv1.MSSV = gd1.MSSV
+JOIN Lop_Hoc lh1 ON gd1.Ten_Lop = lh1.Ten_Lop
+JOIN Ghi_Danh gd2 ON sv1.MSSV = gd2.MSSV
+JOIN Lop_Hoc lh2 ON gd2.Ten_Lop = lh2.Ten_Lop
+WHERE lh1.Dia_Diem = lh2.Dia_Diem AND lh1.Ten_Lop <> lh2.Ten_Lop;
+
+-- Cau 7
+SELECT DISTINCT lh.Ten_Lop
+FROM Lop_Hoc lh
+LEFT JOIN Ghi_Danh gd ON lh.Ten_Lop = gd.Ten_Lop
+WHERE lh.Phong_Hoc = 'BA1080' OR (SELECT COUNT(*) FROM Ghi_Danh WHERE Ten_Lop = lh.Ten_Lop) >= 2;
+
+-- cau 8
+SELECT k.Giang_Vien
+FROM Khoa k
+LEFT JOIN Lop_Hoc lh ON k.ID = lh.ID
+LEFT JOIN Ghi_Danh gd ON lh.Ten_Lop = gd.Ten_Lop
+GROUP BY k.Giang_Vien
+HAVING COUNT(gd.MSSV) < 5;
+
+-- cau 9
+SELECT MSSV, COUNT(Ten_Lop) AS SoLopDangKy
+FROM Ghi_Danh
+GROUP BY MSSV
+HAVING COUNT(Ten_Lop) >= 2;
+
+-- cau10
+SELECT sv.Ten, gd.Ten_Lop
+FROM Sinh_Vien sv
+LEFT JOIN Ghi_Danh gd ON sv.MSSV = gd.MSSV;
 </h1>
